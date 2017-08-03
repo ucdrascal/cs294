@@ -15,6 +15,14 @@ import numpy as np
 import tf_util
 import gym
 import load_policy
+import h5py
+
+def save_ao(expert_data, envname):
+    filename = 'data.h5'
+    with h5py.File(filename, 'a') as f:
+        grp = f.create_group(envname)
+        for name, array in expert_data.items():
+            grp.create_dataset(name, data=array)
 
 def main():
     import argparse
@@ -67,6 +75,7 @@ def main():
 
         expert_data = {'observations': np.array(observations),
                        'actions': np.array(actions)}
+        save_ao(expert_data, args.envname)
 
 if __name__ == '__main__':
     main()
